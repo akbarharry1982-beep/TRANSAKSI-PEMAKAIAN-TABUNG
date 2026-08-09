@@ -187,6 +187,11 @@
                             <!-- Dua input terpisah untuk mengakomodasi Kamera dan Galeri secara spesifik -->
                             <input type="file" id="fotoKamera" accept="image/*" capture="environment" class="hidden">
                             <input type="file" id="fotoGaleri" accept="image/*" multiple class="hidden">
+                            
+                            <!-- Tombol Reset Foto (Sembunyi otomatis) -->
+                            <button type="button" id="btnResetFoto" class="hidden mt-3 mx-auto px-3 py-1 bg-red-100 text-red-600 rounded text-xs font-semibold hover:bg-red-200 transition-colors">
+                                <i class="fas fa-trash-alt mr-1"></i> Hapus Semua Foto Terkumpul
+                            </button>
                         </div>
 
                     <!-- Submit Button -->
@@ -245,7 +250,7 @@
 
     <script>
         // URL Google Apps Script Web App 
-        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxV9FhoruyzOBbwoxlOnFM2f6tTb5nnLdLpiqcxNhbI02zLEmM-6kqL1xKD0PbqTfjS9Q/exec';
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzmk6LHm7EqGrzK0aicsZeUi-OHKJBevHTFgY1CgTWCQnRdbM66h5Ba4R4G8IYJJDAbTw/exec';
 
         // --- DATA DINAMIS DARI SERVER ---
         let mb52Data = {}; 
@@ -425,29 +430,42 @@
             renderTable(filteredData);
         });
 
+        // Variabel penampung akumulasi foto
+        let accumulatedFiles = [];
+
         // Handler perubahan file foto (Kamera atau Galeri)
         function handleFotoChange(e) {
-            const kameraInput = document.getElementById('fotoKamera');
-            const galeriInput = document.getElementById('fotoGaleri');
             const fileNameText = document.getElementById('fileNameText');
+            const btnResetFoto = document.getElementById('btnResetFoto');
 
-            if (e.target.id === 'fotoKamera' && kameraInput.files.length > 0) {
-                fileNameText.innerText = 'File terpilih: ' + kameraInput.files[0].name;
-                fileNameText.className = 'block text-xs text-green-600 font-semibold mb-1';
-                galeriInput.value = ''; // Kosongkan input galeri jika memilih kamera
-            } else if (e.target.id === 'fotoGaleri' && galeriInput.files.length > 0) {
-                if (galeriInput.files.length === 1) {
-                    fileNameText.innerText = 'File terpilih: ' + galeriInput.files[0].name;
-                } else {
-                    fileNameText.innerText = galeriInput.files.length + ' file foto terpilih';
-                }
-                fileNameText.className = 'block text-xs text-green-600 font-semibold mb-1';
-                kameraInput.value = ''; // Kosongkan input kamera jika memilih galeri
-            } else {
-                fileNameText.innerText = 'Pilih metode pengambilan foto di atas';
-                fileNameText.className = 'block text-xs text-gray-500 font-semibold mb-1';
+            if (e.target.files && e.target.files.length > 0) {
+                // Tambahkan file yang baru dipilih/difoto ke dalam array akumulasi
+                accumulatedFiles = accumulatedFiles.concat(Array.from(e.target.files));
+                
+                // Reset input agar bisa diklik lagi (Kamera bisa diklik berkali-kali)
+                e.target.value = '';
+                
+                // Update UI Teks
+                fileNameText.innerText = accumulatedFiles.length + ' foto berhasil dikumpulkan';
+                fileNameText.className = 'block text-xs text-green-600 font-bold mb-1';
+                
+                // Tampilkan tombol reset
+                btnResetFoto.classList.remove('hidden');
             }
         }
+
+        // Handler untuk mereset foto
+        document.getElementById('btnResetFoto').addEventListener('click', function() {
+            accumulatedFiles = []; // Kosongkan memori penampung foto
+            document.getElementById('fotoKamera').value = '';
+            document.getElementById('fotoGaleri').value = '';
+            
+            const fileNameText = document.getElementById('fileNameText');
+            fileNameText.innerText = 'Pilih metode pengambilan foto di atas';
+            fileNameText.className = 'block text-xs text-gray-500 font-semibold mb-1';
+            
+            this.classList.add('hidden'); // Sembunyikan lagi tombol reset
+        });
 
         document.getElementById('fotoKamera').addEventListener('change', handleFotoChange);
         document.getElementById('fotoGaleri').addEventListener('change', handleFotoChange);
@@ -463,16 +481,8 @@
             btnSubmit.disabled = true;
 
             try {
-                // Mengecek input mana yang terisi (kamera atau galeri)
-                const fotoKamera = document.getElementById('fotoKamera');
-                const fotoGaleri = document.getElementById('fotoGaleri');
-                let files = [];
-                
-                if (fotoKamera.files.length > 0) {
-                    files.push(fotoKamera.files[0]);
-                } else if (fotoGaleri.files.length > 0) {
-                    files = Array.from(fotoGaleri.files);
-                }
+                // Mengambil dari array akumulasi, bukan dari input elemen langsung
+                let files = accumulatedFiles;
 
                 let fotoBase64Array = []; 
                 let statusFoto = "-";
@@ -486,7 +496,16 @@
                             return; 
                         }
                         let b64 = await getBase64(files[i]);
-                        fotoBase64Array.push(b64);
+                        
+                        // Ekstrak tipe file (mime) dan sandi base64 murni tanpa awalan data:image/...
+                        let mime = files[i].type || "image/jpeg";
+                        let rawBase64 = b64.includes(',') ? b64.split(',')[1] : b64;
+                        
+                        fotoBase64Array.push({
+                            name: files[i].name || "foto_galeri",
+                            mimeType: mime,
+                            base64: rawBase64
+                        });
                     }
                     statusFoto = "Ada";
                 }
@@ -551,12 +570,17 @@
                 document.getElementById('sloc').value = "GUDANG TABUNG";
                 
                 // Kembalikan teks indikator file seperti semula setelah submit
+                accumulatedFiles = [];
                 document.getElementById('fotoKamera').value = '';
                 document.getElementById('fotoGaleri').value = '';
                 const fileNameText = document.getElementById('fileNameText');
                 if (fileNameText) {
                     fileNameText.innerText = 'Pilih metode pengambilan foto di atas';
                     fileNameText.className = 'block text-xs text-gray-500 font-semibold mb-1';
+                }
+                const btnResetFoto = document.getElementById('btnResetFoto');
+                if (btnResetFoto) {
+                    btnResetFoto.classList.add('hidden');
                 }
                 
             } catch (error) {
