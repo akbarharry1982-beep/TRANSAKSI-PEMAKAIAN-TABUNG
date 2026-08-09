@@ -186,9 +186,8 @@
                             
                             <!-- Dua input terpisah untuk mengakomodasi Kamera dan Galeri secara spesifik -->
                             <input type="file" id="fotoKamera" accept="image/*" capture="environment" class="hidden">
-                            <input type="file" id="fotoGaleri" accept="image/*" class="hidden">
+                            <input type="file" id="fotoGaleri" accept="image/*" multiple class="hidden">
                         </div>
-                    </div>
 
                     <!-- Submit Button -->
                     <div class="pt-4">
@@ -246,7 +245,7 @@
 
     <script>
         // URL Google Apps Script Web App 
-        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzOlTw6PMJuUTVxyYGxgcFzJwR4ljTN4nb8Ubt-Q6cgn5D3SxIEAIqprcplXUQO96fwJw/exec';
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxBXsuGxfLlmuhebEHi9yIGqLllUy_wq05bj0Wi5U89OOqXpAinrl0EJyigRiiBMlhQ2A/exec';
 
         // --- DATA DINAMIS DARI SERVER ---
         let mb52Data = {}; 
@@ -366,7 +365,7 @@
             tbody.innerHTML = '';
             
             if (dataToRender.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="8" class="px-6 py-4 text-center text-sm text-gray-500">Tidak ada data transaksi yang ditemukan.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="10" class="px-6 py-4 text-center text-sm text-gray-500">Tidak ada data transaksi yang ditemukan.</td></tr>';
                 return;
             }
 
@@ -375,7 +374,13 @@
                 
                 let fotoTampilan = '<span class="text-gray-400 text-xs">-</span>';
                 if (t.fotoUrl && t.fotoUrl.startsWith('http')) {
-                    fotoTampilan = `<a href="${t.fotoUrl}" target="_blank" class="text-blue-600 hover:text-blue-800" title="Lihat Foto"><i class="fas fa-image text-lg"></i></a>`;
+                    // Cek apakah ada lebih dari 1 link foto (dipisahkan koma)
+                    const urls = t.fotoUrl.split(', ');
+                    if (urls.length > 1) {
+                        fotoTampilan = urls.map((url, idx) => `<a href="${url}" target="_blank" class="text-blue-600 hover:text-blue-800 mr-1" title="Foto ${idx+1}"><i class="fas fa-image text-lg"></i></a>`).join('');
+                    } else {
+                        fotoTampilan = `<a href="${t.fotoUrl}" target="_blank" class="text-blue-600 hover:text-blue-800" title="Lihat Foto"><i class="fas fa-image text-lg"></i></a>`;
+                    }
                 } else if (t.fotoUrl === '#') {
                      fotoTampilan = `<span class="text-green-600 text-xs font-semibold"><i class="fas fa-check-circle"></i> Dikirim</span>`;
                 }
@@ -425,19 +430,19 @@
             const kameraInput = document.getElementById('fotoKamera');
             const galeriInput = document.getElementById('fotoGaleri');
             const fileNameText = document.getElementById('fileNameText');
-            let selectedFile = null;
 
             if (e.target.id === 'fotoKamera' && kameraInput.files.length > 0) {
-                selectedFile = kameraInput.files[0];
+                fileNameText.innerText = 'File terpilih: ' + kameraInput.files[0].name;
+                fileNameText.className = 'block text-xs text-green-600 font-semibold mb-1';
                 galeriInput.value = ''; // Kosongkan input galeri jika memilih kamera
             } else if (e.target.id === 'fotoGaleri' && galeriInput.files.length > 0) {
-                selectedFile = galeriInput.files[0];
-                kameraInput.value = ''; // Kosongkan input kamera jika memilih galeri
-            }
-
-            if (selectedFile) {
-                fileNameText.innerText = 'File terpilih: ' + selectedFile.name;
+                if (galeriInput.files.length === 1) {
+                    fileNameText.innerText = 'File terpilih: ' + galeriInput.files[0].name;
+                } else {
+                    fileNameText.innerText = galeriInput.files.length + ' file foto terpilih';
+                }
                 fileNameText.className = 'block text-xs text-green-600 font-semibold mb-1';
+                kameraInput.value = ''; // Kosongkan input kamera jika memilih galeri
             } else {
                 fileNameText.innerText = 'Pilih metode pengambilan foto di atas';
                 fileNameText.className = 'block text-xs text-gray-500 font-semibold mb-1';
@@ -461,25 +466,28 @@
                 // Mengecek input mana yang terisi (kamera atau galeri)
                 const fotoKamera = document.getElementById('fotoKamera');
                 const fotoGaleri = document.getElementById('fotoGaleri');
-                let file = null;
+                let files = [];
                 
                 if (fotoKamera.files.length > 0) {
-                    file = fotoKamera.files[0];
+                    files.push(fotoKamera.files[0]);
                 } else if (fotoGaleri.files.length > 0) {
-                    file = fotoGaleri.files[0];
+                    files = Array.from(fotoGaleri.files);
                 }
 
-                let fotoBase64 = "-"; 
+                let fotoBase64Array = []; 
                 let statusFoto = "-";
 
-                if (file) {
-                    if (file.size > 5242880) {
-                        alert("Gagal: Ukuran file foto terlalu besar! Maksimal 5MB.");
-                        btnSubmit.innerHTML = originalBtnText;
-                        btnSubmit.disabled = false;
-                        return; 
+                if (files.length > 0) {
+                    for (let i = 0; i < files.length; i++) {
+                        if (files[i].size > 5242880) {
+                            alert(`Gagal: Ukuran file "${files[i].name}" terlalu besar! Maksimal 5MB per file.`);
+                            btnSubmit.innerHTML = originalBtnText;
+                            btnSubmit.disabled = false;
+                            return; 
+                        }
+                        let b64 = await getBase64(files[i]);
+                        fotoBase64Array.push(b64);
                     }
-                    fotoBase64 = await getBase64(file);
                     statusFoto = "Ada";
                 }
 
@@ -502,7 +510,7 @@
                     nikDiserahkan: document.getElementById('nikDiserahkan').value,
                     diambilOleh: document.getElementById('diambilOleh').value,
                     nikDiambil: document.getElementById('nikDiambil').value,
-                    foto: fotoBase64 
+                    foto: fotoBase64Array.length > 0 ? fotoBase64Array : "-" 
                 };
 
                 // Kirim ke backend
