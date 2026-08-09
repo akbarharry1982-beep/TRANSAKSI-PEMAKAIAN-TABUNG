@@ -11,7 +11,7 @@
         body { font-family: 'Inter', sans-serif; }
     </style>
 </head>
-<body class="bg-gray-100 min-h-screen py-8 px-4 sm:px-6 lg:px-8">
+<body class="bg-green-50 min-h-screen py-8 px-4 sm:px-6 lg:px-8">
     <div class="max-w-5xl mx-auto space-y-8">
         
         <div class="text-center">
@@ -28,14 +28,14 @@
                         <!-- Tanggal & Jam -->
                         <div>
                             <label for="datetime" class="block text-sm font-medium text-gray-700">Tanggal & Jam (WITA)</label>
-                            <input type="datetime-local" id="datetime" name="datetime" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 text-gray-500 cursor-not-allowed focus:outline-none sm:text-sm" readonly required>
+                            <input type="datetime-local" id="datetime" name="datetime" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 text-gray-600 cursor-not-allowed focus:outline-none sm:text-sm" readonly required>
                             <p class="mt-1 text-xs text-gray-500">Terisi otomatis sesuai waktu WITA</p>
                         </div>
 
                         <!-- Plant -->
                         <div>
                             <label for="plant" class="block text-sm font-medium text-gray-700">Plant</label>
-                            <select id="plant" name="plant" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" required>
+                            <select id="plant" name="plant" class="mt-1 block w-full px-3 py-2 border border-gray-300 bg-yellow-50 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" required>
                                 <option value="" disabled selected>Pilih Plant...</option>
                                 <option value="PL01 - MSJ">PL01 - MSJ</option>
                                 <option value="PL02 - TDM">PL02 - TDM</option>
@@ -70,13 +70,13 @@
                                 <option value="Lainnya">Lain nya ( ketik manual )</option>
                             </select>
                             <!-- Kolom input manual yang tersembunyi, muncul jika "Lainnya" dipilih -->
-                            <input type="text" id="plantManual" name="plantManual" class="mt-2 hidden w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="Ketik nama plant...">
+                            <input type="text" id="plantManual" name="plantManual" class="mt-2 hidden w-full px-3 py-2 border border-gray-300 bg-yellow-50 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="Ketik nama plant...">
                         </div>
 
                         <!-- Shift -->
                         <div>
                             <label for="shift" class="block text-sm font-medium text-gray-700">Shift</label>
-                            <select id="shift" name="shift" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" required>
+                            <select id="shift" name="shift" class="mt-1 block w-full px-3 py-2 border border-gray-300 bg-yellow-50 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" required>
                                 <option value="" disabled selected>Pilih Shift...</option>
                                 <option value="DS">DS</option>
                                 <option value="NS">NS</option>
@@ -86,14 +86,14 @@
                         <!-- Code Master -->
                         <div>
                             <label for="codeMaster" class="block text-sm font-medium text-gray-700">Code Master</label>
-                            <input type="text" id="codeMaster" name="codeMaster" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 text-gray-500 cursor-not-allowed focus:outline-none sm:text-sm" readonly required>
+                            <input type="text" id="codeMaster" name="codeMaster" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 text-gray-600 cursor-not-allowed focus:outline-none sm:text-sm" readonly required>
                             <p class="mt-1 text-xs text-gray-500">Terisi otomatis sesuai Description</p>
                         </div>
 
                         <!-- Description -->
                         <div class="sm:col-span-2">
                             <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
-                            <select id="description" name="description" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" required>
+                            <select id="description" name="description" class="mt-1 block w-full px-3 py-2 border border-gray-300 bg-yellow-50 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" required>
                                 <option value="" disabled selected>Pilih Description...</option>
                                 <option value="GAS OXYGEN">GAS OXYGEN</option>
                                 <option value="GAS ACETYLENE">GAS ACETYLENE</option>
@@ -107,62 +107,62 @@
                         <!-- Part Number -->
                         <div>
                             <label for="partNumber" class="block text-sm font-medium text-gray-700">Part Number</label>
-                            <input type="text" id="partNumber" name="partNumber" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 text-gray-500 cursor-not-allowed focus:outline-none sm:text-sm" readonly required>
+                            <input type="text" id="partNumber" name="partNumber" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 text-gray-600 cursor-not-allowed focus:outline-none sm:text-sm" readonly required>
                             <p class="mt-1 text-xs text-gray-500">Terisi otomatis sesuai Description</p>
                         </div>
 
                         <!-- Qty -->
                         <div>
                             <label for="qty" class="block text-sm font-medium text-gray-700">Qty</label>
-                            <input type="number" id="qty" name="qty" min="1" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" required>
+                            <input type="number" id="qty" name="qty" min="1" class="mt-1 block w-full px-3 py-2 border border-gray-300 bg-yellow-50 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" required>
                         </div>
 
                         <!-- UOM (Readonly) -->
                         <div>
                             <label for="uom" class="block text-sm font-medium text-gray-700">UoM</label>
-                            <input type="text" id="uom" name="uom" value="TABUNG" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 text-gray-500 cursor-not-allowed focus:outline-none sm:text-sm" readonly required>
+                            <input type="text" id="uom" name="uom" value="TABUNG" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 text-gray-600 cursor-not-allowed focus:outline-none sm:text-sm" readonly required>
                         </div>
 
                         <!-- No SERI -->
                         <div>
                             <label for="noSeri" class="block text-sm font-medium text-gray-700">No SERI</label>
-                            <input type="text" id="noSeri" name="noSeri" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" required>
+                            <input type="text" id="noSeri" name="noSeri" class="mt-1 block w-full px-3 py-2 border border-gray-300 bg-yellow-50 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" required>
                         </div>
 
                         <!-- SLOC (Readonly) -->
                         <div class="sm:col-span-2">
                             <label for="sloc" class="block text-sm font-medium text-gray-700">SLOC</label>
-                            <input type="text" id="sloc" name="sloc" value="GUDANG TABUNG" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 text-gray-500 cursor-not-allowed focus:outline-none sm:text-sm" readonly required>
+                            <input type="text" id="sloc" name="sloc" value="GUDANG TABUNG" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 text-gray-600 cursor-not-allowed focus:outline-none sm:text-sm" readonly required>
                         </div>
 
                         <!-- Di Serahkan Oleh -->
                         <div>
                             <label for="diserahkanOleh" class="block text-sm font-medium text-gray-700">Di Serahkan Oleh</label>
-                            <input type="text" id="diserahkanOleh" name="diserahkanOleh" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" required>
+                            <input type="text" id="diserahkanOleh" name="diserahkanOleh" class="mt-1 block w-full px-3 py-2 border border-gray-300 bg-yellow-50 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" required>
                         </div>
 
                         <!-- NIK Di Serahkan Oleh -->
                         <div>
                             <label for="nikDiserahkan" class="block text-sm font-medium text-gray-700">NIK (Di Serahkan Oleh)</label>
-                            <input type="text" id="nikDiserahkan" name="nikDiserahkan" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" required>
+                            <input type="text" id="nikDiserahkan" name="nikDiserahkan" class="mt-1 block w-full px-3 py-2 border border-gray-300 bg-yellow-50 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" required>
                         </div>
 
                         <!-- Di Ambil Oleh -->
                         <div>
                             <label for="diambilOleh" class="block text-sm font-medium text-gray-700">Di Ambil Oleh</label>
-                            <input type="text" id="diambilOleh" name="diambilOleh" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" required>
+                            <input type="text" id="diambilOleh" name="diambilOleh" class="mt-1 block w-full px-3 py-2 border border-gray-300 bg-yellow-50 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" required>
                         </div>
 
                         <!-- NIK Di Ambil Oleh -->
                         <div>
                             <label for="nikDiambil" class="block text-sm font-medium text-gray-700">NIK (Di Ambil Oleh)</label>
-                            <input type="text" id="nikDiambil" name="nikDiambil" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" required>
+                            <input type="text" id="nikDiambil" name="nikDiambil" class="mt-1 block w-full px-3 py-2 border border-gray-300 bg-yellow-50 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" required>
                         </div>
 
                         <!-- Foto Dokumentasi -->
-                        <div class="sm:col-span-2 border-2 border-dashed border-gray-400 p-6 rounded-lg bg-gray-50 text-center hover:bg-gray-100 transition-colors">
+                        <div class="sm:col-span-2 border-2 border-dashed border-yellow-400 p-6 rounded-lg bg-yellow-50 text-center hover:bg-yellow-100 transition-colors">
                             <div class="flex justify-center items-center space-x-8 mb-4">
-                                <!-- Tombol Kamera Khusus -->
+                                <!-- Tombol Kamera Khusus (Warna Biru) -->
                                 <label for="fotoKamera" class="cursor-pointer flex flex-col items-center group">
                                     <div class="bg-blue-100 p-4 rounded-full mb-2 group-hover:bg-blue-200 transition-colors shadow-sm">
                                         <i class="fas fa-camera text-3xl text-blue-600"></i>
@@ -170,9 +170,9 @@
                                     <span class="text-sm font-semibold text-gray-700">Kamera</span>
                                 </label>
                                 
-                                <div class="text-gray-300 font-bold text-2xl">ATAU</div>
+                                <div class="text-gray-400 font-bold text-2xl">ATAU</div>
                                 
-                                <!-- Tombol Galeri Khusus -->
+                                <!-- Tombol Galeri Khusus (Warna Hijau) -->
                                 <label for="fotoGaleri" class="cursor-pointer flex flex-col items-center group">
                                     <div class="bg-green-100 p-4 rounded-full mb-2 group-hover:bg-green-200 transition-colors shadow-sm">
                                         <i class="fas fa-images text-3xl text-green-600"></i>
@@ -212,9 +212,9 @@
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <i class="fas fa-search text-gray-400"></i>
                         </div>
-                        <input type="text" id="searchInput" class="focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md py-2 px-3 border" placeholder="Cari CM, NIK, Seri...">
+                        <input type="text" id="searchInput" class="focus:ring-blue-500 focus:border-blue-500 bg-yellow-50 block w-full pl-10 sm:text-sm border-gray-300 rounded-md py-2 px-3 border" placeholder="Cari CM, NIK, Seri...">
                     </div>
-                    <button type="button" id="btnRefresh" onclick="fetchServerData()" class="p-2 border border-gray-300 rounded-md shadow-sm bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors" title="Muat Ulang Data">
+                    <button type="button" id="btnRefresh" onclick="fetchServerData()" class="p-2 border border-gray-300 rounded-md shadow-sm bg-white hover:bg-yellow-50 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors" title="Muat Ulang Data">
                         <i id="refreshIcon" class="fas fa-sync-alt text-gray-600"></i>
                     </button>
                 </div>
