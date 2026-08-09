@@ -250,7 +250,7 @@
 
     <script>
         // Tautan terbaru dari backend skrip Anda
-        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyw4PP2Z9W5k1vzZJmHUpT8CoP9qgZ64eDTKk4QY0ocizPxuxlupQOv7ui-6EAUUE37/exec';
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby-18udvmMw3hj9_Ev4Yp-Aw3ASgNkofvqILSOOYF3ezc6jABMX5A-ZhrFl8p4mUlhOOA/exec';
 
         // --- DATA DINAMIS DARI SERVER ---
         let mb52Data = {}; 
@@ -352,12 +352,56 @@
         setInterval(updateWITA, 1000);
         updateWITA(); 
 
-        // Fungsi Convert File Foto ke Base64
-        function getBase64(file) {
+        // Fungsi Convert & Kompres Foto (Solusi Ampuh untuk iPhone/Android ke format murni JPG)
+        function processImageToBase64(file) {
             return new Promise((resolve, reject) => {
+                // Cek batas maksimal 5MB
+                if (file.size > 5242880) {
+                    reject(new Error(`Ukuran file "${file.name}" terlalu besar! Maksimal 5MB.`));
+                    return;
+                }
+
                 const reader = new FileReader();
                 reader.readAsDataURL(file);
-                reader.onload = () => resolve(reader.result);
+                reader.onload = function(event) {
+                    const img = new Image();
+                    img.onload = function() {
+                        const canvas = document.createElement('canvas');
+                        const ctx = canvas.getContext('2d');
+
+                        // Batasi resolusi maksimal 1920px agar ukuran file tetap ringan & ideal
+                        const MAX_WIDTH = 1920;
+                        const MAX_HEIGHT = 1920;
+                        let width = img.width;
+                        let height = img.height;
+
+                        if (width > height) {
+                            if (width > MAX_WIDTH) {
+                                height *= MAX_WIDTH / width;
+                                width = MAX_WIDTH;
+                            }
+                        } else {
+                            if (height > MAX_HEIGHT) {
+                                width *= MAX_HEIGHT / height;
+                                height = MAX_HEIGHT;
+                            }
+                        }
+
+                        canvas.width = width;
+                        canvas.height = height;
+                        
+                        // Latar putih (mencegah gambar dengan background transparan menjadi hitam)
+                        ctx.fillStyle = "white";
+                        ctx.fillRect(0, 0, canvas.width, canvas.height);
+                        ctx.drawImage(img, 0, 0, width, height);
+
+                        // Konversi paksa menjadi format JPEG sejati dengan kualitas 80%
+                        const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
+                        resolve(dataUrl);
+                    };
+                    img.onerror = () => reject(new Error("Gagal membaca data gambar/Format tidak didukung."));
+                    img.src = event.target.result;
+                };
                 reader.onerror = error => reject(error);
             });
         }
@@ -485,27 +529,24 @@
 
                 if (files.length > 0) {
                     for (let i = 0; i < files.length; i++) {
-                        // Cek file > 5MB
-                        if (files[i].size > 5242880) {
-                            alert(`Gagal: Ukuran file "${files[i].name}" terlalu besar! Maksimal 5MB per file.`);
+                        try {
+                            // Proses gambar: Konversi HEIC iPhone/Android ke JPG murni lewat Canvas
+                            let b64WithHeader = await processImageToBase64(files[i]);
+                            
+                            // Ekstrak sandi base64 murni (membuang awalan data:image/jpeg;base64,)
+                            let rawBase64 = b64WithHeader.split(',')[1];
+                            
+                            fotoBase64Array.push({
+                                name: files[i].name || "foto_dokumentasi",
+                                mimeType: "image/jpeg", // Terjamin 100% karena dikonversi via canvas
+                                base64: rawBase64
+                            });
+                        } catch (err) {
+                            alert("Gagal memproses foto: " + err.message);
                             btnSubmit.innerHTML = originalBtnText;
                             btnSubmit.disabled = false;
-                            return; 
+                            return; // Batalkan submit jika ada file > 5MB atau error pembacaan
                         }
-                        
-                        let b64 = await getBase64(files[i]);
-                        
-                        // Default fallback ke image/jpeg jika sistem (terutama iOS/HEIC) gagal mengenali
-                        let mime = files[i].type || "image/jpeg";
-                        
-                        // Ekstrak sandi base64 murni tanpa awalan data:image/...
-                        let rawBase64 = b64.includes(',') ? b64.split(',')[1] : b64;
-                        
-                        fotoBase64Array.push({
-                            name: files[i].name || "foto_galeri",
-                            mimeType: mime,
-                            base64: rawBase64
-                        });
                     }
                     statusFoto = "Ada";
                 }
