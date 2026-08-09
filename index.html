@@ -67,7 +67,10 @@
                                 <option value="PL28 - DC PLRN">PL28 - DC PLRN</option>
                                 <option value="PL31 - MHU">PL31 - MHU</option>
                                 <option value="PL32 - MHU">PL32 - MHU</option>
+                                <option value="Lainnya">Lain nya ( ketik manual )</option>
                             </select>
+                            <!-- Kolom input manual yang tersembunyi, muncul jika "Lainnya" dipilih -->
+                            <input type="text" id="plantManual" name="plantManual" class="mt-2 hidden w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="Ketik nama plant...">
                         </div>
 
                         <!-- Shift -->
@@ -157,12 +160,31 @@
                         </div>
 
                         <!-- Foto Dokumentasi -->
-                        <div class="sm:col-span-2 border border-dashed border-gray-400 p-4 rounded-lg bg-gray-50">
-                            <label for="foto" class="block text-sm font-medium text-gray-700 mb-2">
-                                <i class="fas fa-camera text-blue-600 mr-1"></i> / <i class="fas fa-image text-blue-600 mr-1 ml-1"></i> Dokumentasi Foto (Max 5MB)
+                        <div class="sm:col-span-2 border-2 border-dashed border-gray-400 p-6 rounded-lg bg-gray-50 text-center hover:bg-gray-100 transition-colors">
+                            <label for="foto" class="cursor-pointer block w-full">
+                                <!-- Ikon Kamera & Galeri -->
+                                <div class="flex justify-center items-center space-x-6 mb-4">
+                                    <div class="flex flex-col items-center">
+                                        <div class="bg-blue-100 p-3 rounded-full mb-2">
+                                            <i class="fas fa-camera text-2xl text-blue-600"></i>
+                                        </div>
+                                        <span class="text-xs font-semibold text-gray-600">Kamera</span>
+                                    </div>
+                                    <div class="text-gray-300 font-bold text-2xl">/</div>
+                                    <div class="flex flex-col items-center">
+                                        <div class="bg-green-100 p-3 rounded-full mb-2">
+                                            <i class="fas fa-images text-2xl text-green-600"></i>
+                                        </div>
+                                        <span class="text-xs font-semibold text-gray-600">Galeri</span>
+                                    </div>
+                                </div>
+                                
+                                <span class="block text-sm font-medium text-gray-800 mb-1">Dokumentasi Foto (Max 5MB)</span>
+                                <span id="fileNameText" class="block text-xs text-blue-600 font-semibold mb-1">Klik area ini untuk mengambil foto</span>
                             </label>
-                            <input type="file" id="foto" name="foto" accept="image/jpeg, image/png" capture="environment" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
-                            <p class="text-xs text-gray-500 mt-2">Bisa langsung ambil dari kamera HP atau pilih dari galeri (Hanya .JPG / .PNG)</p>
+                            
+                            <!-- Input disembunyikan (hidden) agar teks bawaan browser hilang -->
+                            <input type="file" id="foto" name="foto" accept="image/jpeg, image/png, image/jpg" class="hidden" onchange="document.getElementById('fileNameText').innerText = this.files.length > 0 ? 'File terpilih: ' + this.files[0].name : 'Klik area ini untuk mengambil foto'; document.getElementById('fileNameText').className = this.files.length > 0 ? 'block text-xs text-green-600 font-semibold mb-1' : 'block text-xs text-blue-600 font-semibold mb-1';">
                         </div>
                     </div>
 
@@ -222,7 +244,7 @@
 
     <script>
         // URL Google Apps Script Web App 
-        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw0a1c-n4bENcs3-XcNx2w7n1s6DqJk8qcRWyMiW7KZVUCQVvtU4RH55Ez3hTpCvHdFjg/exec';
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyRQ5QPRT8AS2JIyskT57PhHNqX7vaI8W9UbpsJxmHSJU1LcLbaR1Sxx-tAPRBZX67f8Q/exec';
 
         // --- DATA DINAMIS DARI SERVER ---
         let mb52Data = {}; 
@@ -273,6 +295,19 @@
         }
         
         fetchServerData();
+
+        // Trigger otomatis saat pilihan Plant (Lainnya) di-klik
+        document.getElementById('plant').addEventListener('change', function() {
+            const plantManual = document.getElementById('plantManual');
+            if (this.value === 'Lainnya') {
+                plantManual.classList.remove('hidden'); // Tampilkan kolom input
+                plantManual.required = true; // Jadikan wajib diisi
+            } else {
+                plantManual.classList.add('hidden'); // Sembunyikan kolom input
+                plantManual.required = false; 
+                plantManual.value = ''; // Kosongkan isinya
+            }
+        });
 
         // Trigger otomatis saat pilihan Description di-klik/di-ubah
         document.getElementById('description').addEventListener('change', function() {
@@ -409,9 +444,13 @@
                     statusFoto = "Ada";
                 }
 
+                // Menentukan nilai Plant (Dari dropdown atau dari input ketik manual)
+                const plantValue = document.getElementById('plant').value;
+                const finalPlant = plantValue === 'Lainnya' ? document.getElementById('plantManual').value : plantValue;
+
                 const payloadData = {
                     datetime: document.getElementById('datetime').value,
-                    plant: document.getElementById('plant').value,
+                    plant: finalPlant,
                     shift: document.getElementById('shift').value,
                     codeMaster: document.getElementById('codeMaster').value,
                     description: document.getElementById('description').value,
@@ -463,6 +502,13 @@
                 document.getElementById('transactionForm').reset();
                 document.getElementById('uom').value = "TABUNG";
                 document.getElementById('sloc').value = "GUDANG TABUNG";
+                
+                // Kembalikan teks indikator file seperti semula setelah submit
+                const fileNameText = document.getElementById('fileNameText');
+                if (fileNameText) {
+                    fileNameText.innerText = 'Klik area ini untuk mengambil foto';
+                    fileNameText.className = 'block text-xs text-blue-600 font-semibold mb-1';
+                }
                 
             } catch (error) {
                 console.error("Error Detail:", error);
