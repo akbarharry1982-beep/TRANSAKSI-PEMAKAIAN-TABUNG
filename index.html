@@ -184,7 +184,7 @@
                             <span class="block text-sm font-medium text-gray-800 mb-1">Dokumentasi Foto (Max 5MB)</span>
                             <span id="fileNameText" class="block text-xs text-gray-500 font-semibold mb-1">Pilih metode pengambilan foto di atas</span>
                             
-                            <!-- Filter "image/*" digunakan agar HP Android/iPhone tidak error (menolak) saat memilih file -->
+                            <!-- Filter "image/*" digunakan agar HP Android/iPhone tidak memblokir dan mengizinkan pemilihan dari galeri -->
                             <input type="file" id="fotoKamera" accept="image/*" capture="environment" class="hidden">
                             <input type="file" id="fotoGaleri" accept="image/*" multiple class="hidden">
                             
@@ -250,7 +250,7 @@
 
     <script>
         // Tautan terbaru dari backend skrip Anda
-        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby-18udvmMw3hj9_Ev4Yp-Aw3ASgNkofvqILSOOYF3ezc6jABMX5A-ZhrFl8p4mUlhOOA/exec';
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxn8c262KeigkMh79tf5r5Rbg9BqbcSamady4pwPKg9tiNJaaGLq_QWUS_bg5kkGi0bpQ/exec';
 
         // --- DATA DINAMIS DARI SERVER ---
         let mb52Data = {}; 
@@ -352,7 +352,7 @@
         setInterval(updateWITA, 1000);
         updateWITA(); 
 
-        // Fungsi Convert & Kompres Foto (Solusi Ampuh untuk iPhone/Android ke format murni JPG)
+        // Fungsi Convert & Kompres Foto (Solusi Ampuh untuk iPhone HEIC / Android ke format murni JPG)
         function processImageToBase64(file) {
             return new Promise((resolve, reject) => {
                 // Cek batas maksimal 5MB
@@ -390,12 +390,13 @@
                         canvas.width = width;
                         canvas.height = height;
                         
-                        // Latar putih (mencegah gambar dengan background transparan menjadi hitam)
+                        // Latar putih (mencegah gambar dengan background transparan/HEIC yang error menjadi hitam)
                         ctx.fillStyle = "white";
                         ctx.fillRect(0, 0, canvas.width, canvas.height);
+                        // Gambar ulang foto di dalam canvas browser
                         ctx.drawImage(img, 0, 0, width, height);
 
-                        // Konversi paksa menjadi format JPEG sejati dengan kualitas 80%
+                        // Konversi paksa menjadi format JPEG sejati dengan kualitas 80% (Mengabaikan HEIC)
                         const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
                         resolve(dataUrl);
                     };
@@ -409,7 +410,7 @@
         // Variabel penampung akumulasi foto
         let accumulatedFiles = [];
 
-        // Handler perubahan file foto (Kamera atau Galeri)
+        // Handler perubahan file foto (Kamera atau Galeri - mendukung Multi Foto)
         function handleFotoChange(e) {
             const fileNameText = document.getElementById('fileNameText');
             const btnResetFoto = document.getElementById('btnResetFoto');
@@ -418,10 +419,10 @@
                 // Tambahkan file yang baru dipilih/difoto ke dalam array akumulasi
                 accumulatedFiles = accumulatedFiles.concat(Array.from(e.target.files));
                 
-                // RESET INPUT. Wajib agar bisa memotret lagi walau file di memori HP sama
+                // RESET INPUT. Wajib agar bisa memotret lagi dari kamera walau file di memori HP sama
                 e.target.value = '';
                 
-                // Update UI Teks
+                // Update UI Teks untuk menampilkan total file yang ditabung
                 fileNameText.innerText = accumulatedFiles.length + ' foto berhasil dikumpulkan';
                 fileNameText.className = 'block text-xs text-green-600 font-bold mb-1';
                 
@@ -461,11 +462,12 @@
                 
                 let fotoTampilan = '<span class="text-gray-400 text-xs">-</span>';
                 if (t.fotoUrl && (t.fotoUrl.includes('http') || t.fotoUrl.includes('drive'))) {
-                    // Cek apakah ada lebih dari 1 link foto (dipisahkan koma atau enter)
+                    // Cek apakah ada lebih dari 1 link foto (dipisahkan koma atau enter dari Backend GS)
                     const urls = t.fotoUrl.split(/[, \n]+/); // split dengan koma atau enter
                     const cleanUrls = urls.filter(u => u.trim().length > 0);
                     
                     if (cleanUrls.length > 1) {
+                        // Menampilkan multi-ikon jika lebih dari 1 foto terdeteksi
                         fotoTampilan = cleanUrls.map((url, idx) => `<a href="${url.trim()}" target="_blank" class="text-blue-600 hover:text-blue-800 mr-1" title="Foto ${idx+1}"><i class="fas fa-image text-lg"></i></a>`).join('');
                     } else if (cleanUrls.length === 1) {
                         fotoTampilan = `<a href="${cleanUrls[0]}" target="_blank" class="text-blue-600 hover:text-blue-800" title="Lihat Foto"><i class="fas fa-image text-lg"></i></a>`;
@@ -527,6 +529,7 @@
                 let fotoBase64Array = []; 
                 let statusFoto = "-";
 
+                // Memproses semua file foto (bisa 1 atau lebih) yang tersimpan di accumulatedFiles
                 if (files.length > 0) {
                     for (let i = 0; i < files.length; i++) {
                         try {
@@ -538,7 +541,7 @@
                             
                             fotoBase64Array.push({
                                 name: files[i].name || "foto_dokumentasi",
-                                mimeType: "image/jpeg", // Terjamin 100% karena dikonversi via canvas
+                                mimeType: "image/jpeg", // Terjamin 100% karena sudah digambar ulang via canvas HTML
                                 base64: rawBase64
                             });
                         } catch (err) {
@@ -582,7 +585,7 @@
                     body: JSON.stringify(payloadData)
                 });
 
-                // Tampilan sementara sukses
+                // Tampilan sementara sukses di tabel HTML (optimistic update)
                 const optimisticData = {
                     no: "Baru",
                     datetime: payloadData.datetime.replace('T', ' '),
@@ -609,7 +612,7 @@
                 document.getElementById('uom').value = "TABUNG";
                 document.getElementById('sloc').value = "GUDANG TABUNG";
                 
-                // Reset foto di UI
+                // Reset foto di UI setelah sukses simpan
                 accumulatedFiles = [];
                 document.getElementById('fotoKamera').value = '';
                 document.getElementById('fotoGaleri').value = '';
