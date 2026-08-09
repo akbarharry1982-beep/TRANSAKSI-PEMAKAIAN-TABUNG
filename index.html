@@ -28,7 +28,8 @@
                         <!-- Tanggal & Jam -->
                         <div>
                             <label for="datetime" class="block text-sm font-medium text-gray-700">Tanggal & Jam (WITA)</label>
-                            <input type="datetime-local" id="datetime" name="datetime" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 text-gray-600 cursor-not-allowed focus:outline-none sm:text-sm" readonly required>
+                            <!-- Kolom otomatis dengan warna bg-slate-100 -->
+                            <input type="datetime-local" id="datetime" name="datetime" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-slate-100 text-gray-600 cursor-not-allowed focus:outline-none sm:text-sm" readonly required>
                             <p class="mt-1 text-xs text-gray-500">Terisi otomatis sesuai waktu WITA</p>
                         </div>
 
@@ -69,7 +70,6 @@
                                 <option value="PL32 - MHU">PL32 - MHU</option>
                                 <option value="Lainnya">Lain nya ( ketik manual )</option>
                             </select>
-                            <!-- Kolom input manual yang tersembunyi, muncul jika "Lainnya" dipilih -->
                             <input type="text" id="plantManual" name="plantManual" class="mt-2 hidden w-full px-3 py-2 border border-gray-300 bg-yellow-50 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="Ketik nama plant...">
                         </div>
 
@@ -86,7 +86,7 @@
                         <!-- Code Master -->
                         <div>
                             <label for="codeMaster" class="block text-sm font-medium text-gray-700">Code Master</label>
-                            <input type="text" id="codeMaster" name="codeMaster" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 text-gray-600 cursor-not-allowed focus:outline-none sm:text-sm" readonly required>
+                            <input type="text" id="codeMaster" name="codeMaster" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-slate-100 text-gray-600 cursor-not-allowed focus:outline-none sm:text-sm" readonly required>
                             <p class="mt-1 text-xs text-gray-500">Terisi otomatis sesuai Description</p>
                         </div>
 
@@ -107,7 +107,7 @@
                         <!-- Part Number -->
                         <div>
                             <label for="partNumber" class="block text-sm font-medium text-gray-700">Part Number</label>
-                            <input type="text" id="partNumber" name="partNumber" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 text-gray-600 cursor-not-allowed focus:outline-none sm:text-sm" readonly required>
+                            <input type="text" id="partNumber" name="partNumber" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-slate-100 text-gray-600 cursor-not-allowed focus:outline-none sm:text-sm" readonly required>
                             <p class="mt-1 text-xs text-gray-500">Terisi otomatis sesuai Description</p>
                         </div>
 
@@ -120,7 +120,7 @@
                         <!-- UOM (Readonly) -->
                         <div>
                             <label for="uom" class="block text-sm font-medium text-gray-700">UoM</label>
-                            <input type="text" id="uom" name="uom" value="TABUNG" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 text-gray-600 cursor-not-allowed focus:outline-none sm:text-sm" readonly required>
+                            <input type="text" id="uom" name="uom" value="TABUNG" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-slate-100 text-gray-600 cursor-not-allowed focus:outline-none sm:text-sm" readonly required>
                         </div>
 
                         <!-- No SERI -->
@@ -132,7 +132,7 @@
                         <!-- SLOC (Readonly) -->
                         <div class="sm:col-span-2">
                             <label for="sloc" class="block text-sm font-medium text-gray-700">SLOC</label>
-                            <input type="text" id="sloc" name="sloc" value="GUDANG TABUNG" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 text-gray-600 cursor-not-allowed focus:outline-none sm:text-sm" readonly required>
+                            <input type="text" id="sloc" name="sloc" value="GUDANG TABUNG" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-slate-100 text-gray-600 cursor-not-allowed focus:outline-none sm:text-sm" readonly required>
                         </div>
 
                         <!-- Di Serahkan Oleh -->
@@ -184,9 +184,9 @@
                             <span class="block text-sm font-medium text-gray-800 mb-1">Dokumentasi Foto (Max 5MB)</span>
                             <span id="fileNameText" class="block text-xs text-gray-500 font-semibold mb-1">Pilih metode pengambilan foto di atas</span>
                             
-                            <!-- Dua input terpisah. Secara spesifik dibatasi hanya untuk ekstensi JPG dan PNG -->
-                            <input type="file" id="fotoKamera" accept="image/jpeg, image/png" capture="environment" class="hidden">
-                            <input type="file" id="fotoGaleri" accept="image/jpeg, image/png" multiple class="hidden">
+                            <!-- Filter "image/*" digunakan agar HP Android/iPhone tidak error (menolak) saat memilih file -->
+                            <input type="file" id="fotoKamera" accept="image/*" capture="environment" class="hidden">
+                            <input type="file" id="fotoGaleri" accept="image/*" multiple class="hidden">
                             
                             <!-- Tombol Reset Foto (Sembunyi otomatis) -->
                             <button type="button" id="btnResetFoto" class="hidden mt-3 mx-auto px-3 py-1 bg-red-100 text-red-600 rounded text-xs font-semibold hover:bg-red-200 transition-colors">
@@ -249,8 +249,8 @@
     </div>
 
     <script>
-        // URL Google Apps Script Web App 
-        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxghk8-9H-YEN4quKVFuvusjRAnqT6NecqUNtjZD30_v1dlACR4ePR8MNYPV7Vl4zmcrQ/exec';
+        // Tautan terbaru dari backend skrip Anda
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyw4PP2Z9W5k1vzZJmHUpT8CoP9qgZ64eDTKk4QY0ocizPxuxlupQOv7ui-6EAUUE37/exec';
 
         // --- DATA DINAMIS DARI SERVER ---
         let mb52Data = {}; 
@@ -267,9 +267,8 @@
                 if (refreshIcon) refreshIcon.classList.add('fa-spin');
                 cmInput.placeholder = "Menyambungkan ke MB52...";
                 pnInput.placeholder = "Menyambungkan ke MB52...";
-                tbody.innerHTML = '<tr><td colspan="8" class="px-6 py-4 text-center text-sm text-gray-500"><i class="fas fa-spinner fa-spin mr-2"></i> Mengunduh data dari Google Sheets...</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="10" class="px-6 py-4 text-center text-sm text-gray-500"><i class="fas fa-spinner fa-spin mr-2"></i> Mengunduh data dari Google Sheets...</td></tr>';
                 
-                // PERBAIKAN: Menambahkan sistem Anti-Cache agar selalu menarik data paling baru
                 const fetchUrl = GOOGLE_SCRIPT_URL + (GOOGLE_SCRIPT_URL.includes('?') ? '&' : '?') + 'nocache=' + new Date().getTime();
                 const response = await fetch(fetchUrl);
                 const data = await response.json();
@@ -278,7 +277,7 @@
                     console.error("Kesalahan dari backend:", data.error);
                     cmInput.placeholder = "Gagal memuat MB52";
                     pnInput.placeholder = "Gagal memuat MB52";
-                    tbody.innerHTML = '<tr><td colspan="8" class="px-6 py-4 text-center text-sm text-red-500">Gagal memuat riwayat transaksi.</td></tr>';
+                    tbody.innerHTML = '<tr><td colspan="10" class="px-6 py-4 text-center text-sm text-red-500">Gagal memuat riwayat transaksi.</td></tr>';
                 } else {
                     mb52Data = data.mb52 || {};
                     serverTransactions = data.transactions || [];
@@ -286,7 +285,6 @@
                     cmInput.placeholder = "Terisi otomatis";
                     pnInput.placeholder = "Terisi otomatis";
                     
-                    // Reset kotak pencarian saat di refresh
                     document.getElementById('searchInput').value = "";
                     renderTable();
                 }
@@ -294,7 +292,7 @@
                 console.error("Gagal sinkronisasi data:", error);
                 cmInput.placeholder = "Koneksi terputus";
                 pnInput.placeholder = "Koneksi terputus";
-                tbody.innerHTML = '<tr><td colspan="8" class="px-6 py-4 text-center text-sm text-red-500">Koneksi ke server terputus.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="10" class="px-6 py-4 text-center text-sm text-red-500">Koneksi ke server terputus.</td></tr>';
             } finally {
                 if (refreshIcon) refreshIcon.classList.remove('fa-spin');
             }
@@ -364,6 +362,46 @@
             });
         }
 
+        // Variabel penampung akumulasi foto
+        let accumulatedFiles = [];
+
+        // Handler perubahan file foto (Kamera atau Galeri)
+        function handleFotoChange(e) {
+            const fileNameText = document.getElementById('fileNameText');
+            const btnResetFoto = document.getElementById('btnResetFoto');
+
+            if (e.target.files && e.target.files.length > 0) {
+                // Tambahkan file yang baru dipilih/difoto ke dalam array akumulasi
+                accumulatedFiles = accumulatedFiles.concat(Array.from(e.target.files));
+                
+                // RESET INPUT. Wajib agar bisa memotret lagi walau file di memori HP sama
+                e.target.value = '';
+                
+                // Update UI Teks
+                fileNameText.innerText = accumulatedFiles.length + ' foto berhasil dikumpulkan';
+                fileNameText.className = 'block text-xs text-green-600 font-bold mb-1';
+                
+                // Tampilkan tombol reset
+                btnResetFoto.classList.remove('hidden');
+            }
+        }
+
+        // Handler untuk mereset foto
+        document.getElementById('btnResetFoto').addEventListener('click', function() {
+            accumulatedFiles = []; // Kosongkan memori penampung foto
+            document.getElementById('fotoKamera').value = '';
+            document.getElementById('fotoGaleri').value = '';
+            
+            const fileNameText = document.getElementById('fileNameText');
+            fileNameText.innerText = 'Pilih metode pengambilan foto di atas';
+            fileNameText.className = 'block text-xs text-gray-500 font-semibold mb-1';
+            
+            this.classList.add('hidden'); // Sembunyikan lagi tombol reset
+        });
+
+        document.getElementById('fotoKamera').addEventListener('change', handleFotoChange);
+        document.getElementById('fotoGaleri').addEventListener('change', handleFotoChange);
+
         // Fungsi Load Data di Tabel (Bisa menerima data terfilter)
         function renderTable(dataToRender = serverTransactions) {
             const tbody = document.getElementById('tableBody');
@@ -378,13 +416,15 @@
                 const tr = document.createElement('tr');
                 
                 let fotoTampilan = '<span class="text-gray-400 text-xs">-</span>';
-                if (t.fotoUrl && t.fotoUrl.startsWith('http')) {
-                    // Cek apakah ada lebih dari 1 link foto (dipisahkan koma)
-                    const urls = t.fotoUrl.split(', ');
-                    if (urls.length > 1) {
-                        fotoTampilan = urls.map((url, idx) => `<a href="${url}" target="_blank" class="text-blue-600 hover:text-blue-800 mr-1" title="Foto ${idx+1}"><i class="fas fa-image text-lg"></i></a>`).join('');
-                    } else {
-                        fotoTampilan = `<a href="${t.fotoUrl}" target="_blank" class="text-blue-600 hover:text-blue-800" title="Lihat Foto"><i class="fas fa-image text-lg"></i></a>`;
+                if (t.fotoUrl && (t.fotoUrl.includes('http') || t.fotoUrl.includes('drive'))) {
+                    // Cek apakah ada lebih dari 1 link foto (dipisahkan koma atau enter)
+                    const urls = t.fotoUrl.split(/[, \n]+/); // split dengan koma atau enter
+                    const cleanUrls = urls.filter(u => u.trim().length > 0);
+                    
+                    if (cleanUrls.length > 1) {
+                        fotoTampilan = cleanUrls.map((url, idx) => `<a href="${url.trim()}" target="_blank" class="text-blue-600 hover:text-blue-800 mr-1" title="Foto ${idx+1}"><i class="fas fa-image text-lg"></i></a>`).join('');
+                    } else if (cleanUrls.length === 1) {
+                        fotoTampilan = `<a href="${cleanUrls[0]}" target="_blank" class="text-blue-600 hover:text-blue-800" title="Lihat Foto"><i class="fas fa-image text-lg"></i></a>`;
                     }
                 } else if (t.fotoUrl === '#') {
                      fotoTampilan = `<span class="text-green-600 text-xs font-semibold"><i class="fas fa-check-circle"></i> Dikirim</span>`;
@@ -416,7 +456,6 @@
         document.getElementById('searchInput').addEventListener('input', function(e) {
             const keyword = e.target.value.toLowerCase();
             const filteredData = serverTransactions.filter(t => {
-                // Memeriksa masing-masing kolom apakah mengandung kata kunci
                 const matchCM = String(t.codeMaster || "").toLowerCase().includes(keyword);
                 const matchDesc = String(t.description || "").toLowerCase().includes(keyword);
                 const matchSeri = String(t.noSeri || "").toLowerCase().includes(keyword);
@@ -430,47 +469,6 @@
             renderTable(filteredData);
         });
 
-        // Variabel penampung akumulasi foto
-        let accumulatedFiles = [];
-
-        // Handler perubahan file foto (Kamera atau Galeri)
-        function handleFotoChange(e) {
-            const fileNameText = document.getElementById('fileNameText');
-            const btnResetFoto = document.getElementById('btnResetFoto');
-
-            if (e.target.files && e.target.files.length > 0) {
-                // Tambahkan file yang baru dipilih/difoto ke dalam array akumulasi
-                accumulatedFiles = accumulatedFiles.concat(Array.from(e.target.files));
-                
-                // Reset input agar bisa diklik lagi (Kamera bisa diklik berkali-kali)
-                e.target.value = '';
-                
-                // Update UI Teks
-                fileNameText.innerText = accumulatedFiles.length + ' foto berhasil dikumpulkan';
-                fileNameText.className = 'block text-xs text-green-600 font-bold mb-1';
-                
-                // Tampilkan tombol reset
-                btnResetFoto.classList.remove('hidden');
-            }
-        }
-
-        // Handler untuk mereset foto
-        document.getElementById('btnResetFoto').addEventListener('click', function() {
-            accumulatedFiles = []; // Kosongkan memori penampung foto
-            document.getElementById('fotoKamera').value = '';
-            document.getElementById('fotoGaleri').value = '';
-            
-            const fileNameText = document.getElementById('fileNameText');
-            fileNameText.innerText = 'Pilih metode pengambilan foto di atas';
-            fileNameText.className = 'block text-xs text-gray-500 font-semibold mb-1';
-            
-            this.classList.add('hidden'); // Sembunyikan lagi tombol reset
-        });
-
-        document.getElementById('fotoKamera').addEventListener('change', handleFotoChange);
-        document.getElementById('fotoGaleri').addEventListener('change', handleFotoChange);
-
-
         // Handle Submit Form
         document.getElementById('transactionForm').addEventListener('submit', async function(e) {
             e.preventDefault();
@@ -481,24 +479,26 @@
             btnSubmit.disabled = true;
 
             try {
-                // Mengambil dari array akumulasi, bukan dari input elemen langsung
                 let files = accumulatedFiles;
-
                 let fotoBase64Array = []; 
                 let statusFoto = "-";
 
                 if (files.length > 0) {
                     for (let i = 0; i < files.length; i++) {
+                        // Cek file > 5MB
                         if (files[i].size > 5242880) {
                             alert(`Gagal: Ukuran file "${files[i].name}" terlalu besar! Maksimal 5MB per file.`);
                             btnSubmit.innerHTML = originalBtnText;
                             btnSubmit.disabled = false;
                             return; 
                         }
+                        
                         let b64 = await getBase64(files[i]);
                         
-                        // Ekstrak tipe file (mime) dan sandi base64 murni tanpa awalan data:image/...
+                        // Default fallback ke image/jpeg jika sistem (terutama iOS/HEIC) gagal mengenali
                         let mime = files[i].type || "image/jpeg";
+                        
+                        // Ekstrak sandi base64 murni tanpa awalan data:image/...
                         let rawBase64 = b64.includes(',') ? b64.split(',')[1] : b64;
                         
                         fotoBase64Array.push({
@@ -510,7 +510,6 @@
                     statusFoto = "Ada";
                 }
 
-                // Menentukan nilai Plant (Dari dropdown atau dari input ketik manual)
                 const plantValue = document.getElementById('plant').value;
                 const finalPlant = plantValue === 'Lainnya' ? document.getElementById('plantManual').value : plantValue;
 
@@ -542,26 +541,26 @@
                     body: JSON.stringify(payloadData)
                 });
 
-                // Tambahkan data baru secara instan ke tabel agar user tidak bingung menunggu
+                // Tampilan sementara sukses
                 const optimisticData = {
                     no: "Baru",
                     datetime: payloadData.datetime.replace('T', ' '),
                     plant: payloadData.plant,
                     shift: payloadData.shift,
                     codeMaster: payloadData.codeMaster,
-                    description: payloadData.description, // Ditambahkan untuk fungsi cari
+                    description: payloadData.description, 
                     qty: payloadData.qty,
                     uom: payloadData.uom,
                     noSeri: payloadData.noSeri,
-                    diserahkanOleh: payloadData.diserahkanOleh, // Ditambahkan untuk fungsi cari
-                    nikDiserahkan: payloadData.nikDiserahkan, // Ditambahkan untuk fungsi cari
-                    diambilOleh: payloadData.diambilOleh, // Ditambahkan untuk fungsi cari
-                    nikDiambil: payloadData.nikDiambil, // Ditambahkan untuk fungsi cari
+                    diserahkanOleh: payloadData.diserahkanOleh,
+                    nikDiserahkan: payloadData.nikDiserahkan,
+                    diambilOleh: payloadData.diambilOleh,
+                    nikDiambil: payloadData.nikDiambil,
                     fotoUrl: statusFoto === 'Ada' ? '#' : '-'
                 };
                 serverTransactions.unshift(optimisticData); 
-                document.getElementById('searchInput').value = ""; // Reset pencarian
-                renderTable(); // Tampilkan ulang semua data
+                document.getElementById('searchInput').value = ""; 
+                renderTable(); 
 
                 alert('Transaksi Berhasil Disimpan & Dikirim ke Google Sheets!');
                 
@@ -569,7 +568,7 @@
                 document.getElementById('uom').value = "TABUNG";
                 document.getElementById('sloc').value = "GUDANG TABUNG";
                 
-                // Kembalikan teks indikator file seperti semula setelah submit
+                // Reset foto di UI
                 accumulatedFiles = [];
                 document.getElementById('fotoKamera').value = '';
                 document.getElementById('fotoGaleri').value = '';
