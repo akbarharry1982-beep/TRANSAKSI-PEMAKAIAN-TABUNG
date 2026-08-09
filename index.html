@@ -184,9 +184,9 @@
                             <span class="block text-sm font-medium text-gray-800 mb-1">Dokumentasi Foto (Max 5MB)</span>
                             <span id="fileNameText" class="block text-xs text-gray-500 font-semibold mb-1">Pilih metode pengambilan foto di atas</span>
                             
-                            <!-- Dua input terpisah untuk mengakomodasi Kamera dan Galeri secara spesifik -->
-                            <input type="file" id="fotoKamera" accept="image/*" capture="environment" class="hidden">
-                            <input type="file" id="fotoGaleri" accept="image/*" multiple class="hidden">
+                            <!-- Dua input terpisah. Secara spesifik dibatasi hanya untuk ekstensi JPG dan PNG -->
+                            <input type="file" id="fotoKamera" accept="image/jpeg, image/png" capture="environment" class="hidden">
+                            <input type="file" id="fotoGaleri" accept="image/jpeg, image/png" multiple class="hidden">
                             
                             <!-- Tombol Reset Foto (Sembunyi otomatis) -->
                             <button type="button" id="btnResetFoto" class="hidden mt-3 mx-auto px-3 py-1 bg-red-100 text-red-600 rounded text-xs font-semibold hover:bg-red-200 transition-colors">
@@ -250,7 +250,7 @@
 
     <script>
         // URL Google Apps Script Web App 
-        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzmk6LHm7EqGrzK0aicsZeUi-OHKJBevHTFgY1CgTWCQnRdbM66h5Ba4R4G8IYJJDAbTw/exec';
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxghk8-9H-YEN4quKVFuvusjRAnqT6NecqUNtjZD30_v1dlACR4ePR8MNYPV7Vl4zmcrQ/exec';
 
         // --- DATA DINAMIS DARI SERVER ---
         let mb52Data = {}; 
