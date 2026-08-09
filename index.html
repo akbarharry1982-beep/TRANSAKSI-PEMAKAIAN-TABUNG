@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transaksi Pemakaian Tabung</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen py-8 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-5xl mx-auto space-y-8">
+        
+        <div class="text-center">
+            <h1 class="text-3xl font-bold text-gray-900 tracking-tight">Transaksi Pemakaian Tabung</h1>
+            <p class="mt-2 text-sm text-gray-600">Sistem Pencatatan Transaksi & Dokumentasi</p>
+        </div>
+
+        <!-- Form Section -->
+        <div class="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden">
+            <div class="p-6 sm:p-8">
+                <form id="transactionForm" class="space-y-6">
+                    
+                    <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-2">
+                        <!-- Tanggal & Jam -->
+                        <div>
+                            <label for="datetime" class="block text-sm font-medium text-gray-700">Tanggal & Jam (WITA)</label>
+                            <input type="datetime-local" id="datetime" name="datetime" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 text-gray-500 cursor-not-allowed focus:outline-none sm:text-sm" readonly required>
+                            <p class="mt-1 text-xs text-gray-500">Terisi otomatis sesuai waktu WITA</p>
+                        </div>
+
+                        <!-- Plant -->
+                        <div>
+                            <label for="plant" class="block text-sm font-medium text-gray-700">Plant</label>
+                            <select id="plant" name="plant" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" required>
+                                <option value="" disabled selected>Pilih Plant...</option>
+                                <option value="PL01 - MSJ">PL01 - MSJ</option>
+                                <option value="PL02 - TDM">PL02 - TDM</option>
+                                <option value="PL03 - SBB">PL03 - SBB</option>
+                                <option value="PL04 - AGM">PL04 - AGM</option>
+                                <option value="PL05 - PMSS">PL05 - PMSS</option>
+                                <option value="PL06 - MAS">PL06 - MAS</option>
+                                <option value="PL07 - CMX MSJ">PL07 - CMX MSJ</option>
+                                <option value="PL08 - CMX PLRN">PL08 - CMX PLRN</option>
+                                <option value="PL09 - CMX AGM">PL09 - CMX AGM</option>
+                                <option value="PL10 - BSSR 2">PL10 - BSSR 2</option>
+                                <option value="PL11 - PKM">PL11 - PKM</option>
+                                <option value="PL12 - SMD">PL12 - SMD</option>
+                                <option value="PL13 - JKT">PL13 - JKT</option>
+                                <option value="PL14 - KUP">PL14 - KUP</option>
+                                <option value="PL15 - TAJ">PL15 - TAJ</option>
+                                <option value="PL16 - MME">PL16 - MME</option>
+                                <option value="PL17 - MBL MINNING">PL17 - MBL MINNING</option>
+                                <option value="PL18 - CMX MAS">PL18 - CMX MAS</option>
+                                <option value="PL19 - CMX CILEGON">PL19 - CMX CILEGON</option>
+                                <option value="PL20 - SAS">PL20 - SAS</option>
+                                <option value="PL21 - BSEE">PL21 - BSEE</option>
+                                <option value="PL22 - BRN">PL22 - BRN</option>
+                                <option value="PL23 - KUD">PL23 - KUD</option>
+                                <option value="PL24 - BYN">PL24 - BYN</option>
+                                <option value="PL25 - CDI">PL25 - CDI</option>
+                                <option value="PL26 - MHU">PL26 - MHU</option>
+                                <option value="PL27 - MBL HAULING">PL27 - MBL HAULING</option>
+                                <option value="PL28 - DC PLRN">PL28 - DC PLRN</option>
+                                <option value="PL31 - MHU">PL31 - MHU</option>
+                                <option value="PL32 - MHU">PL32 - MHU</option>
+                            </select>
+                        </div>
+
+                        <!-- Shift -->
+                        <div>
+                            <label for="shift" class="block text-sm font-medium text-gray-700">Shift</label>
+                            <select id="shift" name="shift" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" required>
+                                <option value="" disabled selected>Pilih Shift...</option>
+                                <option value="DS">DS</option>
+                                <option value="NS">NS</option>
+                            </select>
+                        </div>
+
+                        <!-- Code Master -->
+                        <div>
+                            <label for="codeMaster" class="block text-sm font-medium text-gray-700">Code Master</label>
+                            <input type="text" id="codeMaster" name="codeMaster" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 text-gray-500 cursor-not-allowed focus:outline-none sm:text-sm" readonly required>
+                            <p class="mt-1 text-xs text-gray-500">Terisi otomatis sesuai Description</p>
+                        </div>
+
+                        <!-- Description -->
+                        <div class="sm:col-span-2">
+                            <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
+                            <select id="description" name="description" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" required>
+                                <option value="" disabled selected>Pilih Description...</option>
+                                <option value="GAS OXYGEN">GAS OXYGEN</option>
+                                <option value="GAS ACETYLENE">GAS ACETYLENE</option>
+                                <option value="NITROGEN">NITROGEN</option>
+                                <option value="GAS CARBONDIOKSIDA (CO2)">GAS CARBONDIOKSIDA (CO2)</option>
+                                <option value="GAS LPG  PERTAMINA">GAS LPG  PERTAMINA</option>
+                                <option value="GAS ARGON">GAS ARGON</option>
+                            </select>
+                        </div>
+
+                        <!-- Part Number -->
+                        <div>
+                            <label for="partNumber" class="block text-sm font-medium text-gray-700">Part Number</label>
+                            <input type="text" id="partNumber" name="partNumber" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 text-gray-500 cursor-not-allowed focus:outline-none sm:text-sm" readonly required>
+                            <p class="mt-1 text-xs text-gray-500">Terisi otomatis sesuai Description</p>
+                        </div>
+
+                        <!-- Qty -->
+                        <div>
+                            <label for="qty" class="block text-sm font-medium text-gray-700">Qty</label>
+                            <input type="number" id="qty" name="qty" min="1" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" required>
+                        </div>
+
+                        <!-- UOM (Readonly) -->
+                        <div>
+                            <label for="uom" class="block text-sm font-medium text-gray-700">UoM</label>
+                            <input type="text" id="uom" name="uom" value="TABUNG" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 text-gray-500 cursor-not-allowed focus:outline-none sm:text-sm" readonly required>
+                        </div>
+
+                        <!-- No SERI -->
+                        <div>
+                            <label for="noSeri" class="block text-sm font-medium text-gray-700">No SERI</label>
+                            <input type="text" id="noSeri" name="noSeri" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" required>
+                        </div>
+
+                        <!-- SLOC (Readonly) -->
+                        <div class="sm:col-span-2">
+                            <label for="sloc" class="block text-sm font-medium text-gray-700">SLOC</label>
+                            <input type="text" id="sloc" name="sloc" value="GUDANG TABUNG" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 text-gray-500 cursor-not-allowed focus:outline-none sm:text-sm" readonly required>
+                        </div>
+
+                        <!-- Di Serahkan Oleh -->
+                        <div>
+                            <label for="diserahkanOleh" class="block text-sm font-medium text-gray-700">Di Serahkan Oleh</label>
+                            <input type="text" id="diserahkanOleh" name="diserahkanOleh" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" required>
+                        </div>
+
+                        <!-- NIK Di Serahkan Oleh -->
+                        <div>
+                            <label for="nikDiserahkan" class="block text-sm font-medium text-gray-700">NIK (Di Serahkan Oleh)</label>
+                            <input type="text" id="nikDiserahkan" name="nikDiserahkan" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" required>
+                        </div>
+
+                        <!-- Di Ambil Oleh -->
+                        <div>
+                            <label for="diambilOleh" class="block text-sm font-medium text-gray-700">Di Ambil Oleh</label>
+                            <input type="text" id="diambilOleh" name="diambilOleh" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" required>
+                        </div>
+
+                        <!-- NIK Di Ambil Oleh -->
+                        <div>
+                            <label for="nikDiambil" class="block text-sm font-medium text-gray-700">NIK (Di Ambil Oleh)</label>
+                            <input type="text" id="nikDiambil" name="nikDiambil" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" required>
+                        </div>
+
+                        <!-- Foto Dokumentasi -->
+                        <div class="sm:col-span-2 border border-dashed border-gray-400 p-4 rounded-lg bg-gray-50">
+                            <label for="foto" class="block text-sm font-medium text-gray-700 mb-2">
+                                <i class="fas fa-camera text-blue-600 mr-1"></i> / <i class="fas fa-image text-blue-600 mr-1 ml-1"></i> Dokumentasi Foto (Max 5MB)
+                            </label>
+                            <input type="file" id="foto" name="foto" accept="image/jpeg, image/png" capture="environment" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+                            <p class="text-xs text-gray-500 mt-2">Bisa langsung ambil dari kamera HP atau pilih dari galeri (Hanya .JPG / .PNG)</p>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="pt-4">
+                        <button type="submit" id="btnSubmit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors">
+                            <i class="fas fa-save mr-2 mt-0.5"></i> Simpan Transaksi
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Data Table Section -->
+        <div class="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden">
+            <div class="px-6 py-5 border-b border-gray-200 bg-gray-50 sm:flex sm:items-center sm:justify-between">
+                <div>
+                    <h3 class="text-lg leading-6 font-medium text-gray-900">Riwayat Transaksi Tersimpan</h3>
+                    <p class="mt-1 text-sm text-gray-500">Data di bawah ini ditarik secara langsung dari Google Sheets.</p>
+                </div>
+                <!-- Search Bar & Refresh Button -->
+                <div class="mt-4 sm:mt-0 sm:ml-4 flex items-center space-x-2">
+                    <div class="relative rounded-md shadow-sm flex-grow">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fas fa-search text-gray-400"></i>
+                        </div>
+                        <input type="text" id="searchInput" class="focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md py-2 px-3 border" placeholder="Cari CM, NIK, Seri...">
+                    </div>
+                    <button type="button" id="btnRefresh" onclick="fetchServerData()" class="p-2 border border-gray-300 rounded-md shadow-sm bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors" title="Muat Ulang Data">
+                        <i id="refreshIcon" class="fas fa-sync-alt text-gray-600"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">No</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tgl/Jam</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Plant</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Shift</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Code Master</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Qty/UoM</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">No Seri</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Diserahkan</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Diambil</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Foto</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody" class="bg-white divide-y divide-gray-200">
+                        <!-- Data will be populated here by JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // URL Google Apps Script Web App 
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw0a1c-n4bENcs3-XcNx2w7n1s6DqJk8qcRWyMiW7KZVUCQVvtU4RH55Ez3hTpCvHdFjg/exec';
+
+        // --- DATA DINAMIS DARI SERVER ---
+        let mb52Data = {}; 
+        let serverTransactions = [];
+
+        // Fungsi mengambil data MB52 & Riwayat Transaksi saat web dimuat
+        async function fetchServerData() {
+            const cmInput = document.getElementById('codeMaster');
+            const pnInput = document.getElementById('partNumber');
+            const tbody = document.getElementById('tableBody');
+            const refreshIcon = document.getElementById('refreshIcon');
+            
+            try {
+                if (refreshIcon) refreshIcon.classList.add('fa-spin');
+                cmInput.placeholder = "Menyambungkan ke MB52...";
+                pnInput.placeholder = "Menyambungkan ke MB52...";
+                tbody.innerHTML = '<tr><td colspan="8" class="px-6 py-4 text-center text-sm text-gray-500"><i class="fas fa-spinner fa-spin mr-2"></i> Mengunduh data dari Google Sheets...</td></tr>';
+                
+                // PERBAIKAN: Menambahkan sistem Anti-Cache agar selalu menarik data paling baru
+                const fetchUrl = GOOGLE_SCRIPT_URL + (GOOGLE_SCRIPT_URL.includes('?') ? '&' : '?') + 'nocache=' + new Date().getTime();
+                const response = await fetch(fetchUrl);
+                const data = await response.json();
+                
+                if (data.error) {
+                    console.error("Kesalahan dari backend:", data.error);
+                    cmInput.placeholder = "Gagal memuat MB52";
+                    pnInput.placeholder = "Gagal memuat MB52";
+                    tbody.innerHTML = '<tr><td colspan="8" class="px-6 py-4 text-center text-sm text-red-500">Gagal memuat riwayat transaksi.</td></tr>';
+                } else {
+                    mb52Data = data.mb52 || {};
+                    serverTransactions = data.transactions || [];
+                    
+                    cmInput.placeholder = "Terisi otomatis";
+                    pnInput.placeholder = "Terisi otomatis";
+                    
+                    // Reset kotak pencarian saat di refresh
+                    document.getElementById('searchInput').value = "";
+                    renderTable();
+                }
+            } catch (error) {
+                console.error("Gagal sinkronisasi data:", error);
+                cmInput.placeholder = "Koneksi terputus";
+                pnInput.placeholder = "Koneksi terputus";
+                tbody.innerHTML = '<tr><td colspan="8" class="px-6 py-4 text-center text-sm text-red-500">Koneksi ke server terputus.</td></tr>';
+            } finally {
+                if (refreshIcon) refreshIcon.classList.remove('fa-spin');
+            }
+        }
+        
+        fetchServerData();
+
+        // Trigger otomatis saat pilihan Description di-klik/di-ubah
+        document.getElementById('description').addEventListener('change', function() {
+            const selectedDesc = this.value.toUpperCase().replace(/\s+/g, ' ').trim();
+            const cmInput = document.getElementById('codeMaster');
+            const pnInput = document.getElementById('partNumber');
+            
+            if (mb52Data[selectedDesc]) {
+                cmInput.value = mb52Data[selectedDesc].codeMaster;
+                pnInput.value = mb52Data[selectedDesc].partNumber;
+            } else {
+                cmInput.value = "";
+                pnInput.value = "";
+                alert("Perhatian: Data Code Master & Part Number untuk '" + this.value + "' belum terdaftar di tab MB52 Anda!");
+            }
+        });
+
+        // Fungsi Update Jam WITA (Otomatis & Real-time)
+        function updateWITA() {
+            const now = new Date();
+            const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+            const witaDate = new Date(utc + (3600000 * 8));
+
+            const year = witaDate.getFullYear();
+            const month = String(witaDate.getMonth() + 1).padStart(2, '0');
+            const day = String(witaDate.getDate()).padStart(2, '0');
+            const hours = String(witaDate.getHours()).padStart(2, '0');
+            const minutes = String(witaDate.getMinutes()).padStart(2, '0');
+
+            const formattedTime = `${year}-${month}-${day}T${hours}:${minutes}`;
+            
+            const datetimeInput = document.getElementById('datetime');
+            if (datetimeInput) {
+                datetimeInput.value = formattedTime;
+            }
+        }
+
+        setInterval(updateWITA, 1000);
+        updateWITA(); 
+
+        // Fungsi Convert File Foto ke Base64
+        function getBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = error => reject(error);
+            });
+        }
+
+        // Fungsi Load Data di Tabel (Bisa menerima data terfilter)
+        function renderTable(dataToRender = serverTransactions) {
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = '';
+            
+            if (dataToRender.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" class="px-6 py-4 text-center text-sm text-gray-500">Tidak ada data transaksi yang ditemukan.</td></tr>';
+                return;
+            }
+
+            dataToRender.forEach((t) => {
+                const tr = document.createElement('tr');
+                
+                let fotoTampilan = '<span class="text-gray-400 text-xs">-</span>';
+                if (t.fotoUrl && t.fotoUrl.startsWith('http')) {
+                    fotoTampilan = `<a href="${t.fotoUrl}" target="_blank" class="text-blue-600 hover:text-blue-800" title="Lihat Foto"><i class="fas fa-image text-lg"></i></a>`;
+                } else if (t.fotoUrl === '#') {
+                     fotoTampilan = `<span class="text-green-600 text-xs font-semibold"><i class="fas fa-check-circle"></i> Dikirim</span>`;
+                }
+
+                tr.innerHTML = `
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${t.no}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${t.datetime}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${t.plant}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${t.shift}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${t.codeMaster}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${t.qty} ${t.uom}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${t.noSeri}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        ${t.diserahkanOleh || '-'}<br>
+                        <span class="text-xs text-gray-400">${t.nikDiserahkan || '-'}</span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        ${t.diambilOleh || '-'}<br>
+                        <span class="text-xs text-gray-400">${t.nikDiambil || '-'}</span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-center">${fotoTampilan}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // Fitur Pencarian Real-time
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            const keyword = e.target.value.toLowerCase();
+            const filteredData = serverTransactions.filter(t => {
+                // Memeriksa masing-masing kolom apakah mengandung kata kunci (Pastikan tipe datanya dikonversi ke String)
+                const matchCM = String(t.codeMaster || "").toLowerCase().includes(keyword);
+                const matchDesc = String(t.description || "").toLowerCase().includes(keyword);
+                const matchSeri = String(t.noSeri || "").toLowerCase().includes(keyword);
+                const matchDiserahkan = String(t.diserahkanOleh || "").toLowerCase().includes(keyword);
+                const matchNikDiserahkan = String(t.nikDiserahkan || "").toLowerCase().includes(keyword);
+                const matchDiambil = String(t.diambilOleh || "").toLowerCase().includes(keyword);
+                const matchNikDiambil = String(t.nikDiambil || "").toLowerCase().includes(keyword);
+                
+                return matchCM || matchDesc || matchSeri || matchDiserahkan || matchNikDiserahkan || matchDiambil || matchNikDiambil;
+            });
+            renderTable(filteredData);
+        });
+
+        // Handle Submit Form
+        document.getElementById('transactionForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const btnSubmit = document.getElementById('btnSubmit');
+            const originalBtnText = btnSubmit.innerHTML;
+            btnSubmit.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Menyimpan...';
+            btnSubmit.disabled = true;
+
+            try {
+                const fotoInput = document.getElementById('foto');
+                let fotoBase64 = "-"; 
+                let statusFoto = "-";
+
+                if (fotoInput.files.length > 0) {
+                    const file = fotoInput.files[0];
+                    if (file.size > 5242880) {
+                        alert("Gagal: Ukuran file foto terlalu besar! Maksimal 5MB.");
+                        btnSubmit.innerHTML = originalBtnText;
+                        btnSubmit.disabled = false;
+                        return; 
+                    }
+                    fotoBase64 = await getBase64(file);
+                    statusFoto = "Ada";
+                }
+
+                const payloadData = {
+                    datetime: document.getElementById('datetime').value,
+                    plant: document.getElementById('plant').value,
+                    shift: document.getElementById('shift').value,
+                    codeMaster: document.getElementById('codeMaster').value,
+                    description: document.getElementById('description').value,
+                    partNumber: document.getElementById('partNumber').value,
+                    qty: document.getElementById('qty').value,
+                    uom: document.getElementById('uom').value,
+                    noSeri: document.getElementById('noSeri').value,
+                    sloc: document.getElementById('sloc').value,
+                    diserahkanOleh: document.getElementById('diserahkanOleh').value,
+                    nikDiserahkan: document.getElementById('nikDiserahkan').value,
+                    diambilOleh: document.getElementById('diambilOleh').value,
+                    nikDiambil: document.getElementById('nikDiambil').value,
+                    foto: fotoBase64 
+                };
+
+                // Kirim ke backend
+                await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors', 
+                    headers: {
+                        'Content-Type': 'text/plain;charset=utf-8'
+                    },
+                    body: JSON.stringify(payloadData)
+                });
+
+                // Tambahkan data baru secara instan ke tabel agar user tidak bingung menunggu
+                const optimisticData = {
+                    no: "Baru",
+                    datetime: payloadData.datetime.replace('T', ' '),
+                    plant: payloadData.plant,
+                    shift: payloadData.shift,
+                    codeMaster: payloadData.codeMaster,
+                    description: payloadData.description, // Ditambahkan untuk fungsi cari
+                    qty: payloadData.qty,
+                    uom: payloadData.uom,
+                    noSeri: payloadData.noSeri,
+                    diserahkanOleh: payloadData.diserahkanOleh, // Ditambahkan untuk fungsi cari
+                    nikDiserahkan: payloadData.nikDiserahkan, // Ditambahkan untuk fungsi cari
+                    diambilOleh: payloadData.diambilOleh, // Ditambahkan untuk fungsi cari
+                    nikDiambil: payloadData.nikDiambil, // Ditambahkan untuk fungsi cari
+                    fotoUrl: statusFoto === 'Ada' ? '#' : '-'
+                };
+                serverTransactions.unshift(optimisticData); 
+                document.getElementById('searchInput').value = ""; // Reset pencarian
+                renderTable(); // Tampilkan ulang semua data
+
+                alert('Transaksi Berhasil Disimpan & Dikirim ke Google Sheets!');
+                
+                document.getElementById('transactionForm').reset();
+                document.getElementById('uom').value = "TABUNG";
+                document.getElementById('sloc').value = "GUDANG TABUNG";
+                
+            } catch (error) {
+                console.error("Error Detail:", error);
+                alert("Maaf, terjadi kesalahan pada sistem: " + error.message);
+            } finally {
+                btnSubmit.innerHTML = originalBtnText;
+                btnSubmit.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>
