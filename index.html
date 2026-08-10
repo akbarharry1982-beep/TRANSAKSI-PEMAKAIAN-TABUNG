@@ -19,7 +19,6 @@
             <p class="mt-2 text-sm text-gray-600">Sistem Pencatatan Transaksi & Dokumentasi</p>
         </div>
 
-        <!-- Form Section -->
         <div class="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden">
             <div class="p-6 sm:p-8">
                 <form id="transactionForm" class="space-y-6">
@@ -28,7 +27,6 @@
                         <!-- Tanggal & Jam -->
                         <div>
                             <label for="datetime" class="block text-sm font-medium text-gray-700">Tanggal & Jam (WITA)</label>
-                            <!-- Kolom otomatis dengan warna bg-slate-100 -->
                             <input type="datetime-local" id="datetime" name="datetime" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-slate-100 text-gray-600 cursor-not-allowed focus:outline-none sm:text-sm" readonly required>
                             <p class="mt-1 text-xs text-gray-500">Terisi otomatis sesuai waktu WITA</p>
                         </div>
@@ -159,36 +157,35 @@
                             <input type="text" id="nikDiambil" name="nikDiambil" class="mt-1 block w-full px-3 py-2 border border-gray-300 bg-yellow-50 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" required>
                         </div>
 
-                        <!-- Foto Dokumentasi -->
                         <div class="sm:col-span-2 border-2 border-dashed border-yellow-400 p-6 rounded-lg bg-yellow-50 text-center hover:bg-yellow-100 transition-colors">
                             <div class="flex justify-center items-center space-x-8 mb-4">
-                                <!-- Tombol Kamera Khusus (Warna Biru) -->
+                                <!-- Tombol Kamera Khusus (Icon Abu-abu netral) -->
                                 <label for="fotoKamera" class="cursor-pointer flex flex-col items-center group">
-                                    <div class="bg-blue-100 p-4 rounded-full mb-2 group-hover:bg-blue-200 transition-colors shadow-sm">
-                                        <i class="fas fa-camera text-3xl text-blue-600"></i>
+                                    <div class="bg-gray-100 p-4 rounded-full mb-2 group-hover:bg-gray-200 transition-colors shadow-sm">
+                                        <i class="fas fa-camera text-3xl text-gray-600"></i>
                                     </div>
                                     <span class="text-sm font-semibold text-gray-700">Kamera</span>
                                 </label>
                                 
                                 <div class="text-gray-400 font-bold text-2xl">ATAU</div>
                                 
-                                <!-- Tombol Galeri Khusus (Warna Hijau) -->
+                                <!-- Tombol Galeri Khusus (Icon Abu-abu netral) -->
                                 <label for="fotoGaleri" class="cursor-pointer flex flex-col items-center group">
-                                    <div class="bg-green-100 p-4 rounded-full mb-2 group-hover:bg-green-200 transition-colors shadow-sm">
-                                        <i class="fas fa-images text-3xl text-green-600"></i>
+                                    <div class="bg-gray-100 p-4 rounded-full mb-2 group-hover:bg-gray-200 transition-colors shadow-sm">
+                                        <i class="fas fa-images text-3xl text-gray-600"></i>
                                     </div>
                                     <span class="text-sm font-semibold text-gray-700">Galeri</span>
                                 </label>
                             </div>
                             
-                            <span class="block text-sm font-medium text-gray-800 mb-1">Dokumentasi Foto (Max 5MB)</span>
+                            <span class="block text-sm font-medium text-gray-800 mb-1">Dokumentasi Foto (Otomatis kompresi jadi JPG, Max 5MB)</span>
                             <span id="fileNameText" class="block text-xs text-gray-500 font-semibold mb-1">Pilih metode pengambilan foto di atas</span>
                             
-                            <!-- Filter "image/*" digunakan agar HP Android/iPhone tidak memblokir dan mengizinkan pemilihan dari galeri -->
+                            <!-- input image/* memaksa Android & iPhone membuka penampil galeri yang sah tanpa hambatan -->
                             <input type="file" id="fotoKamera" accept="image/*" capture="environment" class="hidden">
                             <input type="file" id="fotoGaleri" accept="image/*" multiple class="hidden">
                             
-                            <!-- Tombol Reset Foto (Sembunyi otomatis) -->
+                            <!-- Tombol Reset Foto -->
                             <button type="button" id="btnResetFoto" class="hidden mt-3 mx-auto px-3 py-1 bg-red-100 text-red-600 rounded text-xs font-semibold hover:bg-red-200 transition-colors">
                                 <i class="fas fa-trash-alt mr-1"></i> Hapus Semua Foto Terkumpul
                             </button>
@@ -204,7 +201,6 @@
             </div>
         </div>
 
-        <!-- Data Table Section -->
         <div class="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden">
             <div class="px-6 py-5 border-b border-gray-200 bg-gray-50 sm:flex sm:items-center sm:justify-between">
                 <div>
@@ -249,14 +245,13 @@
     </div>
 
     <script>
-        // Tautan terbaru dari backend skrip Anda
-        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzFdg_0V4bvFRyqKRmTT1_B2rvz50cOKEGTmdf13ihS7vs79YytsYz6BhzilBrKvF7lsQ/exec';
+        // Tautan backend skrip Anda
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxYzo0XLDnPpzne_Y4HZyS8CTiE0Pwy-9tL_ImwSUKlZ6WJwuAV-Ihli_k1PPZDyrijZQ/exec';
 
         // --- DATA DINAMIS DARI SERVER ---
         let mb52Data = {}; 
         let serverTransactions = [];
 
-        // Fungsi mengambil data MB52 & Riwayat Transaksi saat web dimuat
         async function fetchServerData() {
             const cmInput = document.getElementById('codeMaster');
             const pnInput = document.getElementById('partNumber');
@@ -300,20 +295,18 @@
         
         fetchServerData();
 
-        // Trigger otomatis saat pilihan Plant (Lainnya) di-klik
         document.getElementById('plant').addEventListener('change', function() {
             const plantManual = document.getElementById('plantManual');
             if (this.value === 'Lainnya') {
-                plantManual.classList.remove('hidden'); // Tampilkan kolom input
-                plantManual.required = true; // Jadikan wajib diisi
+                plantManual.classList.remove('hidden');
+                plantManual.required = true;
             } else {
-                plantManual.classList.add('hidden'); // Sembunyikan kolom input
+                plantManual.classList.add('hidden');
                 plantManual.required = false; 
-                plantManual.value = ''; // Kosongkan isinya
+                plantManual.value = '';
             }
         });
 
-        // Trigger otomatis saat pilihan Description di-klik/di-ubah
         document.getElementById('description').addEventListener('change', function() {
             const selectedDesc = this.value.toUpperCase().replace(/\s+/g, ' ').trim();
             const cmInput = document.getElementById('codeMaster');
@@ -329,7 +322,6 @@
             }
         });
 
-        // Fungsi Update Jam WITA (Otomatis & Real-time)
         function updateWITA() {
             const now = new Date();
             const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
@@ -355,7 +347,7 @@
         // Fungsi Convert & Kompres Foto (Solusi Ampuh untuk iPhone HEIC / Android ke format murni JPG)
         function processImageToBase64(file) {
             return new Promise((resolve, reject) => {
-                // Cek batas maksimal 5MB
+                // Cek batas maksimal 5MB (agar tidak error)
                 if (file.size > 5242880) {
                     reject(new Error(`Ukuran file "${file.name}" terlalu besar! Maksimal 5MB.`));
                     return;
@@ -369,7 +361,7 @@
                         const canvas = document.createElement('canvas');
                         const ctx = canvas.getContext('2d');
 
-                        // Batasi resolusi maksimal 1920px agar ukuran file tetap ringan & ideal
+                        // Batasi resolusi maksimal 1920px agar ukuran file ringan 
                         const MAX_WIDTH = 1920;
                         const MAX_HEIGHT = 1920;
                         let width = img.width;
@@ -396,7 +388,7 @@
                         // Gambar ulang foto di dalam canvas browser
                         ctx.drawImage(img, 0, 0, width, height);
 
-                        // Konversi paksa menjadi format JPEG sejati dengan kualitas 80% (Mengabaikan HEIC)
+                        // Konversi paksa menjadi format JPEG sejati dengan kualitas 80% (Mengabaikan format HEIC iPhone)
                         const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
                         resolve(dataUrl);
                     };
@@ -407,33 +399,27 @@
             });
         }
 
-        // Variabel penampung akumulasi foto
         let accumulatedFiles = [];
 
-        // Handler perubahan file foto (Kamera atau Galeri - mendukung Multi Foto)
         function handleFotoChange(e) {
             const fileNameText = document.getElementById('fileNameText');
             const btnResetFoto = document.getElementById('btnResetFoto');
 
             if (e.target.files && e.target.files.length > 0) {
-                // Tambahkan file yang baru dipilih/difoto ke dalam array akumulasi
+                // Akumulasi gambar (memungkinkan memotret berkali-kali)
                 accumulatedFiles = accumulatedFiles.concat(Array.from(e.target.files));
                 
-                // RESET INPUT. Wajib agar bisa memotret lagi dari kamera walau file di memori HP sama
+                // RESET INPUT
                 e.target.value = '';
                 
-                // Update UI Teks untuk menampilkan total file yang ditabung
                 fileNameText.innerText = accumulatedFiles.length + ' foto berhasil dikumpulkan';
                 fileNameText.className = 'block text-xs text-green-600 font-bold mb-1';
-                
-                // Tampilkan tombol reset
                 btnResetFoto.classList.remove('hidden');
             }
         }
 
-        // Handler untuk mereset foto
         document.getElementById('btnResetFoto').addEventListener('click', function() {
-            accumulatedFiles = []; // Kosongkan memori penampung foto
+            accumulatedFiles = []; 
             document.getElementById('fotoKamera').value = '';
             document.getElementById('fotoGaleri').value = '';
             
@@ -441,13 +427,12 @@
             fileNameText.innerText = 'Pilih metode pengambilan foto di atas';
             fileNameText.className = 'block text-xs text-gray-500 font-semibold mb-1';
             
-            this.classList.add('hidden'); // Sembunyikan lagi tombol reset
+            this.classList.add('hidden'); 
         });
 
         document.getElementById('fotoKamera').addEventListener('change', handleFotoChange);
         document.getElementById('fotoGaleri').addEventListener('change', handleFotoChange);
 
-        // Fungsi Load Data di Tabel (Bisa menerima data terfilter)
         function renderTable(dataToRender = serverTransactions) {
             const tbody = document.getElementById('tableBody');
             tbody.innerHTML = '';
@@ -462,12 +447,10 @@
                 
                 let fotoTampilan = '<span class="text-gray-400 text-xs">-</span>';
                 if (t.fotoUrl && (t.fotoUrl.includes('http') || t.fotoUrl.includes('drive'))) {
-                    // Cek apakah ada lebih dari 1 link foto (dipisahkan koma atau enter dari Backend GS)
-                    const urls = t.fotoUrl.split(/[, \n]+/); // split dengan koma atau enter
+                    const urls = t.fotoUrl.split(/[, \n]+/); 
                     const cleanUrls = urls.filter(u => u.trim().length > 0);
                     
                     if (cleanUrls.length > 1) {
-                        // Menampilkan multi-ikon jika lebih dari 1 foto terdeteksi
                         fotoTampilan = cleanUrls.map((url, idx) => `<a href="${url.trim()}" target="_blank" class="text-blue-600 hover:text-blue-800 mr-1" title="Foto ${idx+1}"><i class="fas fa-image text-lg"></i></a>`).join('');
                     } else if (cleanUrls.length === 1) {
                         fotoTampilan = `<a href="${cleanUrls[0]}" target="_blank" class="text-blue-600 hover:text-blue-800" title="Lihat Foto"><i class="fas fa-image text-lg"></i></a>`;
@@ -498,7 +481,6 @@
             });
         }
 
-        // Fitur Pencarian Real-time
         document.getElementById('searchInput').addEventListener('input', function(e) {
             const keyword = e.target.value.toLowerCase();
             const filteredData = serverTransactions.filter(t => {
@@ -515,7 +497,6 @@
             renderTable(filteredData);
         });
 
-        // Handle Submit Form
         document.getElementById('transactionForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
@@ -529,26 +510,23 @@
                 let fotoBase64Array = []; 
                 let statusFoto = "-";
 
-                // Memproses semua file foto (bisa 1 atau lebih) yang tersimpan di accumulatedFiles
                 if (files.length > 0) {
                     for (let i = 0; i < files.length; i++) {
                         try {
                             // Proses gambar: Konversi HEIC iPhone/Android ke JPG murni lewat Canvas
                             let b64WithHeader = await processImageToBase64(files[i]);
-                            
-                            // Ekstrak sandi base64 murni (membuang awalan data:image/jpeg;base64,)
                             let rawBase64 = b64WithHeader.split(',')[1];
                             
                             fotoBase64Array.push({
                                 name: files[i].name || "foto_dokumentasi",
-                                mimeType: "image/jpeg", // Terjamin 100% karena sudah digambar ulang via canvas HTML
+                                mimeType: "image/jpeg", // Terjamin murni karena canvas HTML
                                 base64: rawBase64
                             });
                         } catch (err) {
                             alert("Gagal memproses foto: " + err.message);
                             btnSubmit.innerHTML = originalBtnText;
                             btnSubmit.disabled = false;
-                            return; // Batalkan submit jika ada file > 5MB atau error pembacaan
+                            return; 
                         }
                     }
                     statusFoto = "Ada";
@@ -575,7 +553,6 @@
                     foto: fotoBase64Array.length > 0 ? fotoBase64Array : "-" 
                 };
 
-                // Kirim ke backend
                 await fetch(GOOGLE_SCRIPT_URL, {
                     method: 'POST',
                     mode: 'no-cors', 
@@ -585,7 +562,6 @@
                     body: JSON.stringify(payloadData)
                 });
 
-                // Tampilan sementara sukses di tabel HTML (optimistic update)
                 const optimisticData = {
                     no: "Baru",
                     datetime: payloadData.datetime.replace('T', ' '),
@@ -612,7 +588,6 @@
                 document.getElementById('uom').value = "TABUNG";
                 document.getElementById('sloc').value = "GUDANG TABUNG";
                 
-                // Reset foto di UI setelah sukses simpan
                 accumulatedFiles = [];
                 document.getElementById('fotoKamera').value = '';
                 document.getElementById('fotoGaleri').value = '';
