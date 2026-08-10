@@ -246,7 +246,7 @@
 
     <script>
         // Tautan backend skrip Anda
-        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyKcDrdur8EzroGa5UGmbIoSI61-ekTDNuOTD6RSiox1lfVBxoR_bzGy5Sv4kDpxXa_IA/exec';
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz7GfJR9LrXo7jWl0vKo_x4clQF80R7qlBAhJEX7nPhB5y-MXeTSb41-WVqdLK_d7nfbg/exec';
 
         // --- DATA DINAMIS DARI SERVER ---
         let mb52Data = {}; 
@@ -276,7 +276,7 @@
                 } else {
                     mb52Data = data.mb52 || {};
                     serverTransactions = data.transactions || [];
-                    
+
                     cmInput.placeholder = "Terisi otomatis";
                     pnInput.placeholder = "Terisi otomatis";
                     
@@ -312,13 +312,30 @@
             const cmInput = document.getElementById('codeMaster');
             const pnInput = document.getElementById('partNumber');
             
+            let found = false;
+
+            // 1. Coba pencocokan persis (Exact Match)
             if (mb52Data[selectedDesc]) {
                 cmInput.value = mb52Data[selectedDesc].codeMaster;
                 pnInput.value = mb52Data[selectedDesc].partNumber;
+                found = true;
             } else {
+                // 2. Coba pencocokan sebagian (Fuzzy / Partial Match)
+                // Jika tulisan di dropdown dan di MB52 sedikit berbeda, sistem tetap bisa menebaknya
+                for (let key in mb52Data) {
+                    if (key.includes(selectedDesc) || selectedDesc.includes(key)) {
+                        cmInput.value = mb52Data[key].codeMaster;
+                        pnInput.value = mb52Data[key].partNumber;
+                        found = true;
+                        break;
+                    }
+                }
+            }
+
+            if (!found) {
                 cmInput.value = "";
                 pnInput.value = "";
-                alert("Perhatian: Data Code Master & Part Number untuk '" + this.value + "' belum terdaftar di tab MB52 Anda!");
+                alert("Perhatian: Data Code Master & Part Number untuk '" + this.value + "' tidak ditemukan di tab MB52 Anda! Pastikan nama di MB52 mirip dengan daftar.");
             }
         });
 
